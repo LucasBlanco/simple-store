@@ -10,18 +10,55 @@
 npm install --save @lblanco/simple-store
 ```
 
+## Example
+
+https://lucasblanco.github.io/simple-store/
+
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
-import MyComponent from '@lblanco/simple-store'
-import '@lblanco/simple-store/dist/index.css'
+import SimpleStoreProvider from '@lblanco/simple-store'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
+interface Store {
+  name: string
+}
+
+const App = () => {
+  const initialStore = {
+    name: 'Lucas'
   }
+
+  return (
+    <SimpleStoreProvider initialValue={initialStore}>
+      <Child />
+    </SimpleStoreProvider>
+  )
+}
+```
+
+```tsx
+import React from 'react'
+
+import { useSimpleStore } from '@lblanco/simple-store'
+
+const Child = () => {
+  const [store, updateStore] = useSimpleStore<Store>()
+
+  const updateName = (name) => {
+    updateStore((state) => {
+      state.name = name
+    })
+  }
+
+  return (
+    <input
+      type='text'
+      value={store.name}
+      onChange={(e) => updateName(e.target.value)}
+    />
+  )
 }
 ```
 
